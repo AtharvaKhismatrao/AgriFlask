@@ -5,3 +5,16 @@ AGRIFLASK is a Flask-based intelligent web application designed to help users id
 This project combines **Machine Learning, Web Development, Database Management, and Role-Based Authentication** into one practical agriculture-focused solution.
 
 ---
+
+## 🚀 Features
+
+### 🌱 Crop Prediction using Machine Learning
+Predicts the best crop based on:
+
+- Nitrogen (N)
+- Phosphorus (P)
+- Potassium (K)
+- Temperature
+- Humidity
+- pH Value
+- Rainfall
