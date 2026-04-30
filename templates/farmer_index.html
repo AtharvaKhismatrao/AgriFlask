@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="{{ selected_language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t('farmer.title') }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: url('/static/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: -1;
+        }
+
+        .container {
+            width: min(780px, 100%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+            padding: 28px;
+        }
+
+        h1 {
+            color: #1a5c35;
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #444;
+            margin-bottom: 24px;
+        }
+
+        .pilot-note {
+            margin-bottom: 16px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #e8f4fd;
+            color: #185f9b;
+            border: 1px solid #9ecbf0;
+            font-size: 0.92rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            color: #222;
+            font-size: 0.92rem;
+        }
+
+        select {
+            width: 100%;
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid #cfd8dc;
+            background: #f8fbfc;
+            padding: 0 10px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #2d8b5e;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            height: 46px;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a7a4a, #2d8b5e);
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            white-space: pre-line;
+            line-height: 1.5;
+            font-size: 0.98rem;
+        }
+
+        .result.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .result.warning {
+            background: #fff8e1;
+            color: #e65100;
+            border: 1px solid #ffcc80;
+        }
+
+        .result.info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+
+        .result.error {
+            background: #fce4ec;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .panel {
+            margin-top: 14px;
+            background: #f7f7f7;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .panel h3 {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .panel ul {
+            margin-left: 18px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ t('farmer.title') }}</h1>
+        <p class="subtitle">{{ t('farmer.subtitle') }}</p>
+
+        <form method="POST" action="/farmer-predict">
+            <div class="grid">
+                <div class="field">
+                    <label for="soil_texture">{{ t('farmer.soil_texture') }}</label>
+                    <select id="soil_texture" name="soil_texture" required>
+                        <option value="">Select</option>
+                        <option value="sandy" {% if selected and selected.soil_texture == 'sandy' %}selected{% endif %}>{{ t('farmer.soil_texture_sandy') }}</option>
+                        <option value="loamy" {% if selected and selected.soil_texture == 'loamy' %}selected{% endif %}>{{ t('farmer.soil_texture_loamy') }}</option>
+                        <option value="clayey" {% if selected and selected.soil_texture == 'clayey' %}selected{% endif %}>{{ t('farmer.soil_texture_clayey') }}</option>
+                        <option value="silty" {% if selected and selected.soil_texture == 'silty' %}selected{% endif %}>{{ t('farmer.soil_texture_silty') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="soil_fertility">{{ t('farmer.soil_fertility') }}</label>
+                    <select id="soil_fertility" name="soil_fertility" required>
+                        <option value="">Select</option>
+                        <option value="low" {% if selected and selected.soil_fertility == 'low' %}selected{% endif %}>{{ t('farmer.soil_fertility_low') }}</option>
+                        <option value="medium" {% if selected and selected.soil_fertility == 'medium' %}selected{% endif %}>{{ t('farmer.soil_fertility_medium') }}</option>
+                        <option value="high" {% if selected and selected.soil_fertility == 'high' %}selected{% endif %}>{{ t('farmer.soil_fertility_high') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="soil_appearance">{{ t('farmer.soil_appearance') }}</label>
+                    <select id="soil_appearance" name="soil_appearance" required>
+                        <option value="">Select</option>
+                        <option value="normal" {% if selected and selected.soil_appearance == 'normal' %}selected{% endif %}>{{ t('farmer.soil_appearance_normal') }}</option>
+                        <option value="white_crust" {% if selected and selected.soil_appearance == 'white_crust' %}selected{% endif %}>{{ t('farmer.soil_appearance_white_crust') }}</option>
+                        <option value="very_dark" {% if selected and selected.soil_appearance == 'very_dark' %}selected{% endif %}>{{ t('farmer.soil_appearance_very_dark') }}</option>
+                        <option value="sticky_clay" {% if selected and selected.soil_appearance == 'sticky_clay' %}selected{% endif %}>{{ t('farmer.soil_appearance_sticky_clay') }}</option>
+                        <option value="not_sure" {% if selected and selected.soil_appearance == 'not_sure' %}selected{% endif %}>{{ t('farmer.soil_appearance_not_sure') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="air_humidity">{{ t('farmer.air_humidity') }}</label>
+                    <select id="air_humidity" name="air_humidity" required>
+                        <option value="">Select</option>
+                        <option value="very_dry" {% if selected and selected.air_humidity == 'very_dry' %}selected{% endif %}>{{ t('farmer.humidity_very_dry') }}</option>
+                        <option value="dry" {% if selected and selected.air_humidity == 'dry' %}selected{% endif %}>{{ t('farmer.humidity_dry') }}</option>
+                        <option value="comfortable" {% if selected and selected.air_humidity == 'comfortable' %}selected{% endif %}>{{ t('farmer.humidity_comfortable') }}</option>
+                        <option value="humid" {% if selected and selected.air_humidity == 'humid' %}selected{% endif %}>{{ t('farmer.humidity_humid') }}</option>
+                        <option value="very_humid" {% if selected and selected.air_humidity == 'very_humid' %}selected{% endif %}>{{ t('farmer.humidity_very_humid') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="rainfall_pattern">{{ t('farmer.rainfall_pattern') }}</label>
+                    <select id="rainfall_pattern" name="rainfall_pattern" required>
+                        <option value="">Select</option>
+                        <option value="very_low" {% if selected and selected.rainfall_pattern == 'very_low' %}selected{% endif %}>{{ t('farmer.rainfall_very_low') }}</option>
+                        <option value="light" {% if selected and selected.rainfall_pattern == 'light' %}selected{% endif %}>{{ t('farmer.rainfall_light') }}</option>
+                        <option value="moderate" {% if selected and selected.rainfall_pattern == 'moderate' %}selected{% endif %}>{{ t('farmer.rainfall_moderate') }}</option>
+                        <option value="heavy" {% if selected and selected.rainfall_pattern == 'heavy' %}selected{% endif %}>{{ t('farmer.rainfall_heavy') }}</option>
+                        <option value="very_heavy" {% if selected and selected.rainfall_pattern == 'very_heavy' %}selected{% endif %}>{{ t('farmer.rainfall_very_heavy') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="temperature_feel">{{ t('farmer.temperature_feel') }}</label>
+                    <select id="temperature_feel" name="temperature_feel" required>
+                        <option value="">Select</option>
+                        <option value="cool" {% if selected and selected.temperature_feel == 'cool' %}selected{% endif %}>{{ t('farmer.temperature_cool') }}</option>
+                        <option value="mild" {% if selected and selected.temperature_feel == 'mild' %}selected{% endif %}>{{ t('farmer.temperature_mild') }}</option>
+                        <option value="warm" {% if selected and selected.temperature_feel == 'warm' %}selected{% endif %}>{{ t('farmer.temperature_warm') }}</option>
+                        <option value="hot" {% if selected and selected.temperature_feel == 'hot' %}selected{% endif %}>{{ t('farmer.temperature_hot') }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">{{ t('farmer.submit') }}</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="result {{ result_type or 'info' }}">{{ prediction_text }}</div>
+        {% endif %}
+
+        {% if mapped_features %}
+            <div class="panel">
+                <h3>Mapped internal values used by model</h3>
+                <ul>
+                    <li>Nitrogen (N): {{ "%.1f"|format(mapped_features.N) }}</li>
+                    <li>Phosphorus (P): {{ "%.1f"|format(mapped_features.P) }}</li>
+                    <li>Potassium (K): {{ "%.1f"|format(mapped_features.K) }}</li>
+                    <li>Temperature: {{ "%.1f"|format(mapped_features.temp) }} C</li>
+                    <li>Humidity: {{ "%.1f"|format(mapped_features.humidity) }}%</li>
+                    <li>pH: {{ "%.1f"|format(mapped_features.ph) }}</li>
+                    <li>Rainfall: {{ "%.1f"|format(mapped_features.rainfall) }} mm</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

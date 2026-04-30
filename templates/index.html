@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGRIFLASK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Background image — place your image in static/bg.jpg */
+            background: url('/static/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Dark overlay on top of background image to soften it */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.93);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 550px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a5c35;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-family: 'Orangine', 'Orangina', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        label .range-hint {
+            font-weight: 400;
+            color: #888;
+            font-size: 0.78rem;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1a7a4a;
+        }
+
+        input.input-error {
+            border-color: #c62828;
+            background: #fff5f5;
+        }
+
+        .field-error {
+            color: #c62828;
+            font-size: 0.78rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a7a4a, #2d8b5e);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 122, 74, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .result strong {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .result.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .result.error {
+            background: #fce4ec;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .result.warning {
+            background: #fff8e1;
+            color: #e65100;
+            border: 1px solid #ffcc80;
+        }
+
+        .result.info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 AGRIFLASK</h1>
+        <p class="subtitle">Enter soil and weather conditions to get the best crop suggestion</p>
+
+        <form action="/predict" method="POST" id="cropForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="Nitrogen">Nitrogen (N) <span class="range-hint">(10–120 kg/ha)</span></label>
+                    <input type="number" step="any" name="Nitrogen" id="Nitrogen" placeholder="e.g. 90" min="10" max="120" required>
+                    <div class="field-error" id="err-Nitrogen">Nitrogen must be between 10 and 120 kg/ha</div>
+                </div>
+                <div class="form-group">
+                    <label for="Phosphorus">Phosphorus (P) <span class="range-hint">(10–110 kg/ha)</span></label>
+                    <input type="number" step="any" name="Phosphorus" id="Phosphorus" placeholder="e.g. 42" min="10" max="110" required>
+                    <div class="field-error" id="err-Phosphorus">Phosphorus must be between 10 and 110 kg/ha</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="Potassium">Potassium (K) <span class="range-hint">(10–180 kg/ha)</span></label>
+                    <input type="number" step="any" name="Potassium" id="Potassium" placeholder="e.g. 43" min="10" max="180" required>
+                    <div class="field-error" id="err-Potassium">Potassium must be between 10 and 180 kg/ha</div>
+                </div>
+                <div class="form-group">
+                    <label for="Temperature">Temperature (°C) <span class="range-hint">(8–42°C)</span></label>
+                    <input type="number" step="any" name="Temperature" id="Temperature" placeholder="e.g. 20.8" min="8" max="42" required>
+                    <div class="field-error" id="err-Temperature">Temperature must be between 8 and 42°C</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="Humidity">Humidity (%) <span class="range-hint">(20–95%)</span></label>
+                    <input type="number" step="any" name="Humidity" id="Humidity" placeholder="e.g. 82.0" min="20" max="95" required>
+                    <div class="field-error" id="err-Humidity">Humidity must be between 20% and 95%</div>
+                </div>
+                <div class="form-group">
+                    <label for="pH">pH Level <span class="range-hint">(4.5–8.5)</span></label>
+                    <input type="number" step="any" name="pH" id="pH" placeholder="e.g. 6.5" min="4.5" max="8.5" required>
+                    <div class="field-error" id="err-pH">pH must be between 4.5 and 8.5</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Rainfall">Rainfall (mm) <span class="range-hint">(20–300 mm)</span></label>
+                <input type="number" step="any" name="Rainfall" id="Rainfall" placeholder="e.g. 202.9" min="20" max="300" required>
+                <div class="field-error" id="err-Rainfall">Rainfall must be between 20 and 300 mm</div>
+            </div>
+
+            <button type="submit">🔍 Predict Crop</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result {{ 'error' if '❌' in prediction_text else ('warning' if '⚠️' in prediction_text or '⚠' in prediction_text else ('info' if '🤔' in prediction_text else 'success')) }}">
+            {{ prediction_text | safe }}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Client-side validation — highlights errors instantly before form is submitted
+        const formEl = document.getElementById('cropForm');
+        const isLiveServer = window.location.port === '5500';
+
+        if (formEl && isLiveServer) {
+            // Live Server cannot handle Flask routes; submit to Flask dev server instead.
+            formEl.action = 'http://127.0.0.1:5000/predict';
+        }
+
+        const rules = {
+            Nitrogen:    { min: 10,  max: 120, label: 'Nitrogen' },
+            Phosphorus:  { min: 10,  max: 110, label: 'Phosphorus' },
+            Potassium:   { min: 10,  max: 180, label: 'Potassium' },
+            Temperature: { min: 8,   max: 42,  label: 'Temperature' },
+            Humidity:    { min: 20,  max: 95,  label: 'Humidity' },
+            pH:          { min: 4.5, max: 8.5, label: 'pH' },
+            Rainfall:    { min: 20,  max: 300, label: 'Rainfall' }
+        };
+
+        // Live validation on each input as user types
+        Object.keys(rules).forEach(name => {
+            const input = document.getElementById(name);
+            const errDiv = document.getElementById('err-' + name);
+            input.addEventListener('input', () => {
+                const val = parseFloat(input.value);
+                const r = rules[name];
+                if (input.value !== '' && (isNaN(val) || val < r.min || val > r.max)) {
+                    input.classList.add('input-error');
+                    errDiv.style.display = 'block';
+                } else {
+                    input.classList.remove('input-error');
+                    errDiv.style.display = 'none';
+                }
+            });
+        });
+
+        // Block form submission if any field is invalid
+        formEl.addEventListener('submit', function(e) {
+            let hasError = false;
+            Object.keys(rules).forEach(name => {
+                const input = document.getElementById(name);
+                const errDiv = document.getElementById('err-' + name);
+                const val = parseFloat(input.value);
+                const r = rules[name];
+                if (input.value === '' || isNaN(val) || val < r.min || val > r.max) {
+                    input.classList.add('input-error');
+                    errDiv.style.display = 'block';
+                    hasError = true;
+                }
+            });
+            if (hasError) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
+
+

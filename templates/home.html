@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="{{ selected_language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t('home.title') }} | {{ t('nav.home') }}</title>
+    <style>
+        :root {
+            --green-main: #4a7f06;
+            --green-dark: #2f5f00;
+            --green-soft: #6ea821;
+            --bg-light: #efefef;
+            --text: #111111;
+        }
+
+        @font-face {
+            font-family: 'OranginaWeb';
+            src: url('/static/Fonts/Orangina-Demo.ttf') format('truetype');
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: var(--text);
+            line-height: 1.45;
+            overflow-x: hidden;
+            height: 100%;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            background: #ffffff;
+            scroll-snap-type: y mandatory;
+        }
+
+        .topbar {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .topbar-left {
+            width: 290px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.35px;
+        }
+
+        .quote-green {
+            color: #2f8b45;
+            font-weight: 700;
+        }
+
+        .quote-black {
+            color: #1f1f1f;
+            font-weight: 500;
+        }
+
+        .topbar-left img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .brand {
+            text-decoration: none;
+            color: #43a106;
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'OranginaWeb', 'Orangina', 'Orangine', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 0.6px;
+            line-height: 1;
+        }
+
+        .menu {
+            width: auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 28px;
+            font-size: 1.18rem;
+            font-weight: 600;
+            padding-right: 8px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #3c3c3c;
+            padding: 6px 2px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: color 220ms ease;
+        }
+
+        .account-menu {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .account-toggle {
+            background: transparent;
+            border: none;
+            color: #3c3c3c;
+            font-size: 1.18rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .account-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #3c3c3c;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .account-dropdown {
+            position: absolute;
+            top: 130%;
+            right: 0;
+            min-width: 220px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+            padding: 10px;
+            display: none;
+            z-index: 10;
+        }
+
+        .account-dropdown.open {
+            display: block;
+        }
+
+        .account-dropdown p {
+            font-size: 0.84rem;
+            color: #4e4e4e;
+            margin-bottom: 8px;
+        }
+
+        .account-dropdown a {
+            display: block;
+            text-decoration: none;
+            color: #2f5f00;
+            font-size: 0.93rem;
+            font-weight: 600;
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+
+        .account-dropdown a:hover {
+            background: #eef8e3;
+        }
+
+        .menu a:hover,
+        .menu a:focus-visible {
+            color: #43a106;
+            text-shadow: none;
+        }
+
+        .language-form {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-form select {
+            border: 1px solid #d7d7d7;
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.98rem;
+            color: #3c3c3c;
+            background: #ffffff;
+            outline: none;
+        }
+
+        .hero {
+            min-height: calc(100vh - 82px);
+            background: url('/static/home/hero-Desktop - 13.png'), url('/static/Desktop - 13.png');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .hero-card {
+            width: min(1260px, 96%);
+            min-height: 550px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            backdrop-filter: blur(14px) saturate(125%);
+            -webkit-backdrop-filter: blur(14px) saturate(125%);
+            text-align: center;
+            display: grid;
+            place-content: center;
+            padding: 20px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.20);
+        }
+
+        .logo-badge {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .logo-badge img {
+            width: 62%;
+            height: 62%;
+            object-fit: contain;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 4.1rem);
+            line-height: 1.1;
+            color: #ffffff;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.42);
+            margin-bottom: 8px;
+            font-family: 'OranginaWeb', 'Orangina', 'Orangine', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 700;
+        }
+
+        .hero-sub {
+            color: #ffffff;
+            margin-bottom: 2px;
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+
+        .status-pill {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            font-size: 0.92rem;
+        }
+
+        .predict-button {
+            display: inline-block;
+            margin-top: 18px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.08rem;
+            font-weight: 700;
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 2px solid #ffffff;
+            background: linear-gradient(135deg, #54b51b, #3f8f10);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+        }
+
+        .predict-button:hover {
+            filter: brightness(1.05);
+        }
+
+        .section-about {
+            background: #ffffff;
+            padding: 24px 16px 30px;
+            min-height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-about h2,
+        .section-contact h2 {
+            font-size: clamp(2rem, 3.6vw, 2.6rem);
+            font-weight: 900;
+            margin-bottom: 100px;
+            letter-spacing: 0.2px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .about-photo {
+            min-height: 450px;
+            border-radius: 8px;
+            background: url('/static/Rectangle.jpg'), url('/static/bg.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0;
+            transform: translateX(-56px);
+            transition: transform 700ms ease, opacity 700ms ease;
+        }
+
+        .about-copy {
+            font-size: 1.2rem;
+            color: #151515;
+            text-align: left;
+            opacity: 0;
+            transform: translateX(56px);
+            transition: transform 700ms ease, opacity 700ms ease;
+        }
+
+        .section-about.is-visible .about-photo,
+        .section-about.is-visible .about-copy {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .section-about.is-visible .about-copy {
+            transition-delay: 120ms;
+        }
+
+        .about-copy p + p {
+            margin-top: 14px;
+        }
+
+        .section-contact {
+            background: var(--green-main);
+            color: #fff;
+            padding: 28px 16px 36px;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tree-mark {
+            position: absolute;
+            right: 8%;
+            bottom: -10px;
+            width: min(350px, 44vw);
+            opacity: 0.16;
+            pointer-events: none;
+        }
+
+        .contact-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 12px;
+            width: min(900px, 100%);
+            padding: 150px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            background: rgba(255, 255, 255, 0.17);
+            backdrop-filter: blur(4px);
+            margin: auto auto 0;
+            align-self: center;
+            opacity: 0;
+            transform: translateY(56px) scale(0.98);
+            transition: transform 700ms ease, opacity 700ms ease, box-shadow 320ms ease;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-contact.is-visible .contact-grid {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .contact-grid:hover {
+            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-item {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #f4f4f4;
+            padding: 18px 8px 0;
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform 700ms ease, opacity 700ms ease;
+            transition-delay: 160ms;
+        }
+
+        .section-contact.is-visible .footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 960px) {
+            .topbar {
+                height: auto;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .topbar-left,
+            .menu {
+                width: auto;
+            }
+
+            .brand {
+                font-size: 2rem;
+            }
+
+            .menu {
+                gap: 16px;
+                font-size: 1rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+
+            .hero {
+                min-height: calc(100vh - 64px);
+                background-attachment: scroll;
+            }
+
+            .section-about,
+            .section-contact {
+                min-height: 100vh;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .about-photo,
+            .about-copy,
+            .contact-grid,
+            .footer {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="topbar-left">
+                <img src="/static/sprout.png" alt="Sprout icon">
+                <span><span class="quote-green">EMPOWERING</span> <span class="quote-black">DIGITAL AGRICULTURE</span></span>
+            </div>
+
+            <a class="brand" id="brand-link" href="/">AGRIFLASK</a>
+
+            <nav class="menu" aria-label="Main menu">
+                <a href="#home">{{ t('nav.home') }}</a>
+                <a href="#about">{{ t('nav.about') }}</a>
+                <a href="#contact">{{ t('nav.contact') }}</a>
+                <form class="language-form" method="POST" action="/set-language">
+                    <select name="language" onchange="this.form.submit()" aria-label="{{ t('nav.language') }}">
+                        <option value="en" {% if selected_language == 'en' %}selected{% endif %}>English</option>
+                        <option value="hi" {% if selected_language == 'hi' %}selected{% endif %}>Hindi</option>
+                        <option value="ta" {% if selected_language == 'ta' %}selected{% endif %}>Tamil</option>
+                    </select>
+                </form>
+                {% if current_user.is_authenticated %}
+                <div class="account-menu">
+                    <button type="button" class="account-toggle" id="account-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span class="account-icon">{{ current_user.user_id[:1] | upper }}</span>
+                        {{ current_user.user_id }}
+                    </button>
+                    <div class="account-dropdown" id="account-dropdown">
+                        <p>Role: {{ current_user.role }}</p>
+                        <a href="/login?edit=1">{{ t('nav.account.edit') }}</a>
+                        <a href="/logout">{{ t('nav.account.logout') }}</a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/login" id="login-link">{{ t('nav.login') }}</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <section id="home" class="hero">
+            <div class="hero-card">
+                <div class="logo-badge">
+                    <img src="/static/Vector2.png" alt="Leaf logo">
+                </div>
+                <h1>{{ t('home.title') }}</h1>
+                <p class="hero-sub">{{ t('home.subtitle') }}</p>
+                {% if status_message %}
+                <div class="status-pill">{{ status_message }}</div>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <a class="predict-button" href="/go-predict">{{ t('home.predict') }}</a>
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="about" class="section-about">
+            <h2>{{ t('home.about_title') }}</h2>
+            <div class="about-grid">
+                <div class="about-photo" aria-hidden="true"></div>
+                <div class="about-copy">
+                    <p>{{ t('home.about_text_1') }}</p>
+                    <p>{{ t('home.about_text_2') }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-contact">
+            <h2>{{ t('home.contact_title') }}</h2>
+            <img class="tree-mark" src="/static/Vector.png" alt="">
+            <div class="contact-grid">
+                <div class="contact-item"><span class="icon-dot">📞</span>+91 12924 98765</div>
+                <div class="contact-item"><span class="icon-dot">🌐</span>agriflask.com</div>
+                <div class="contact-item"><span class="icon-dot">💬</span>@agriflask</div>
+                <div class="contact-item"><span class="icon-dot">📍</span>Potheri, Chennai Hostel, Chennai</div>
+                <div class="contact-item"><span class="icon-dot">✉</span>hello@agriflask.com</div>
+                <div class="contact-item"><span class="icon-dot">🔗</span>Facebook · X · Instagram</div>
+            </div>
+            <footer class="footer">AGRIFLASK</footer>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLiveServer = window.location.port === '5500';
+            const brandLink = document.getElementById('brand-link');
+            const loginLink = document.getElementById('login-link');
+            const accountToggle = document.getElementById('account-toggle');
+            const accountDropdown = document.getElementById('account-dropdown');
+
+            if (isLiveServer) {
+                // Fallback when opening templates directly via Live Server.
+                if (brandLink) brandLink.href = '/templates/home.html';
+                if (loginLink) loginLink.href = '/templates/login.html';
+            }
+
+            if (accountToggle && accountDropdown) {
+                accountToggle.addEventListener('click', () => {
+                    const isOpen = accountDropdown.classList.toggle('open');
+                    accountToggle.setAttribute('aria-expanded', String(isOpen));
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!accountToggle.contains(event.target) && !accountDropdown.contains(event.target)) {
+                        accountDropdown.classList.remove('open');
+                        accountToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            const sectionsToAnimate = document.querySelectorAll('.section-about, .section-contact');
+            if (!sectionsToAnimate.length || !('IntersectionObserver' in window)) {
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.35
+            });
+
+            sectionsToAnimate.forEach((section) => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
