@@ -26,3 +26,18 @@ Predicts the best crop based on:
 - MySQL Database Credential Storage
 - Unique User ID Validation
 - Session Handling
+
+
+### 🔄 Dynamic Role Switching
+
+Logged-in users can switch roles and explore different dashboards.
+
+### 🌐 Multilingual Support
+
+Supports multiple languages:
+
+- English
+- Hindi
+- Tamil
+
+---
