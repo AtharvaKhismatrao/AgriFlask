@@ -19,3 +19,10 @@ Predicts the best crop based on:
 - pH Value
 - Rainfall
 
+### 👤 User Authentication System
+
+- User Registration
+- Login / Logout
+- MySQL Database Credential Storage
+- Unique User ID Validation
+- Session Handling
