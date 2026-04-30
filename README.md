@@ -1,4 +1,4 @@
-# 🌾 AGRIFLASK – Smart Crop Prediction System
+#  AGRIFLASK – Smart Crop Prediction System
 
 AGRIFLASK is a Flask-based intelligent web application designed to help users identify the most suitable crop for cultivation using Machine Learning. The system predicts crops based on environmental and soil parameters while also providing a role-based user experience for Farmers, Agricultural Analysts, and Students.
 
@@ -6,9 +6,9 @@ This project combines **Machine Learning, Web Development, Database Management, 
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🌱 Crop Prediction using Machine Learning
+###  Crop Prediction using Machine Learning
 Predicts the best crop based on:
 
 - Nitrogen (N)
@@ -19,7 +19,7 @@ Predicts the best crop based on:
 - pH Value
 - Rainfall
 
-### 👤 User Authentication System
+###  User Authentication System
 
 - User Registration
 - Login / Logout
@@ -28,11 +28,11 @@ Predicts the best crop based on:
 - Session Handling
 
 
-### 🔄 Dynamic Role Switching
+###  Dynamic Role Switching
 
 Logged-in users can switch roles and explore different dashboards.
 
-### 🌐 Multilingual Support
+###  Multilingual Support
 
 Supports multiple languages:
 
@@ -42,7 +42,7 @@ Supports multiple languages:
 
 ---
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 ### Backend
 
@@ -50,3 +50,19 @@ Supports multiple languages:
 - Flask
 - MySQL
 - Flask Sessions
+
+### Frontend
+
+- HTML
+- CSS
+- Bootstrap
+- JavaScript
+
+### Machine Learning
+
+- Scikit-learn
+- Random Forest Classifier
+- Pandas
+- NumPy
+
+---
