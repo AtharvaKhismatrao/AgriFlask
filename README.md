@@ -41,3 +41,12 @@ Supports multiple languages:
 - Tamil
 
 ---
+
+## 🛠️ Technologies Used
+
+### Backend
+
+- Python
+- Flask
+- MySQL
+- Flask Sessions
