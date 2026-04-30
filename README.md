@@ -66,3 +66,26 @@ Supports multiple languages:
 - NumPy
 
 ---
+
+## 📂 Project Structure
+
+```bash
+AGRIFLASK/
+│── static/
+│   ├── css/
+│   ├── images/
+│
+│── templates/
+│   ├── home.html
+│   ├── login.html
+│   ├── register.html
+│   ├── farmer_index.html
+│   ├── analyst_index.html
+│   ├── student_index.html
+│
+│── main.py
+│── main2.py
+│── model.py
+│── crop_model.pkl
+│── Crop_recommendation.csv
+│── README.md
