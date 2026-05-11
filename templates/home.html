@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ t('home.title') }} | {{ t('nav.home') }}</title>
+    <title>HarvestIQ | Home</title>
     <style>
         :root {
-            --green-main: #4a7f06;
-            --green-dark: #2f5f00;
-            --green-soft: #6ea821;
-            --bg-light: #efefef;
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --surface-2: #f3f4f6;
             --text: #111111;
-        }
-
-        @font-face {
-            font-family: 'OranginaWeb';
-            src: url('/static/Fonts/Orangina-Demo.ttf') format('truetype');
-            font-display: swap;
+            --muted: #666666;
+            --muted-2: #8d949b;
+            --line: rgba(17, 17, 17, 0.08);
+            --green: #2f7d32;
+            --green-2: #1f5b27;
+            --cta: #b5c222;
+            --shadow: 0 26px 80px rgba(10, 20, 12, 0.10);
+            --radius-lg: 24px;
+            --radius-md: 20px;
+            --radius-sm: 16px;
+            --container: min(1380px, calc(100vw - 40px));
+            --header-fg: #ffffff;
+            --header-bg: rgba(9, 18, 12, 0.08);
+            --header-border: rgba(255, 255, 255, 0.18);
         }
 
         * {
@@ -27,89 +34,1293 @@
 
         html {
             scroll-behavior: smooth;
-            height: 100%;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            background: var(--bg);
             color: var(--text);
-            line-height: 1.45;
+            font-family: Inter, "SF Pro Display", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
             overflow-x: hidden;
-            height: 100%;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
         }
 
         .page {
             width: 100%;
-            min-height: 100vh;
-            margin: 0;
-            background: #ffffff;
-            scroll-snap-type: y mandatory;
         }
 
-        .topbar {
-            height: 82px;
+        .site-header {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: var(--container);
+            z-index: 50;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 34px;
-            background: #ffffff;
-            border-bottom: 1px solid #e8e8e8;
+            gap: 20px;
+            padding: 14px 18px;
+            border: 1px solid var(--header-border);
+            border-radius: 999px;
+            background: var(--header-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            color: var(--header-fg);
+            transition: background 220ms ease, border-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
         }
 
-        .topbar-left {
-            width: 290px;
+        .site-header.scrolled {
+            --header-fg: #171717;
+            --header-bg: rgba(255, 255, 255, 0.86);
+            --header-border: rgba(17, 17, 17, 0.08);
+            box-shadow: 0 18px 46px rgba(10, 20, 12, 0.08);
+        }
+
+        .brand-lockup {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex: 0 0 auto;
+        }
+
+        .brand-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-grid;
+            place-items: center;
+            color: #ffffff;
+            background: linear-gradient(135deg, #3f9a3d, #1e6228);
+            box-shadow: 0 10px 24px rgba(31, 91, 39, 0.22);
+        }
+
+        .brand-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            flex: 1 1 auto;
+            min-width: 0;
+            white-space: nowrap;
+        }
+
+        .site-nav a,
+        .site-nav button,
+        .site-nav select {
+            color: var(--header-fg);
+            font: inherit;
+        }
+
+        .site-nav a {
+            text-decoration: none;
+            font-size: 0.96rem;
+            font-weight: 500;
+            opacity: 0.94;
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+
+        .site-nav a:hover,
+        .site-nav a:focus-visible {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .language-form {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .language-form select {
+            min-height: 38px;
+            border: 1px solid rgba(17, 17, 17, 0.12);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            padding: 0 14px;
+            outline: none;
+            color: #3d4247;
+            font-size: 0.92rem;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 18px;
+            border-radius: 999px;
+            border: 1px solid var(--header-fg);
+            background: rgba(255, 255, 255, 0.14);
+            color: var(--header-fg);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+        }
+
+        .site-header.scrolled .contact-btn {
+            background: #111111;
+            color: #ffffff;
+            border-color: #111111;
+        }
+
+        .contact-btn:hover,
+        .contact-btn:focus-visible {
+            transform: translateY(-1px);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 118px 20px 32px;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(9, 16, 12, 0.26), rgba(9, 16, 12, 0.42)),
+                url('/static/bg.jpg') center center / cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.34));
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            width: min(980px, 100%);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            backdrop-filter: blur(10px);
+            font-size: 0.82rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1), transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero h1 {
+            margin-top: 22px;
+            font-size: clamp(4.4rem, 11vw, 9rem);
+            line-height: 0.93;
+            letter-spacing: -0.06em;
+            font-weight: 800;
+            text-shadow: 0 12px 36px rgba(0, 0, 0, 0.20);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1), transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero p {
+            margin-top: 22px;
+            width: min(760px, 100%);
+            font-size: clamp(1rem, 1.5vw, 1.18rem);
+            color: rgba(255, 255, 255, 0.90);
+            line-height: 1.75;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1), transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero-actions {
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1), transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.96rem;
+            font-weight: 700;
+            transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+        }
+
+        .hero-pill.primary {
+            background: #ffffff;
+            color: #101010;
+        }
+
+        .hero-pill.secondary {
+            background: rgba(255, 255, 255, 0.10);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+
+        .hero-pill:hover,
+        .hero-pill:focus-visible {
+            transform: translateY(-1px);
+        }
+
+        .hero-footer-cue {
+            position: absolute;
+            left: 50%;
+            bottom: 26px;
+            transform: translateX(-50%);
+            z-index: 1;
+            display: grid;
+            gap: 10px;
+            place-items: center;
+            color: rgba(255, 255, 255, 0.90);
+            text-transform: uppercase;
+            letter-spacing: 0.32em;
+            font-size: 0.72rem;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateX(-50%) translateY(40px);
+            transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1), transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero.hero-ready .hero-kicker {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+
+        .hero.hero-ready h1 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.05s;
+        }
+
+        .hero.hero-ready p {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.25s;
+        }
+
+        .hero.hero-ready .hero-actions {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.35s;
+        }
+
+        .hero.hero-ready .hero-footer-cue {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            transition-delay: 0.5s;
+        }
+
+        .scroll-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.60);
+            display: grid;
+            place-items: center;
+            animation: floatY 1.8s ease-in-out infinite;
+        }
+
+        .scroll-circle::before {
+            content: '↓';
+            font-size: 0.9rem;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        .stats-bar {
+            background: #ffffff;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-shell {
+            width: var(--container);
+            margin: 0 auto;
+            padding: 0 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0;
+        }
+
+        .stat-item {
+            padding: 30px 18px 32px;
+            border-right: 1px solid var(--line);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: clamp(2.2rem, 3vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            color: #1a1a1a;
+        }
+
+        .stat-label {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+
+        .reveal-y {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-y.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stats-grid.reveal-y.visible .stat-item,
+        .about-grid.reveal-y.visible > .section-title,
+        .about-grid.reveal-y.visible > .about-copy > p,
+        .about-grid.reveal-y.visible .feature-card,
+        .section-header-row.reveal-y.visible,
+        .project-stack.reveal-y.visible,
+        .article-sidebar.reveal-y.visible,
+        .article-card.reveal-y.visible,
+        .footer-grid.reveal-y.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stats-grid.reveal-y .stat-item,
+        .about-grid.reveal-y > .section-title,
+        .about-grid.reveal-y > .about-copy > p,
+        .about-grid.reveal-y .feature-card,
+        .section-header-row.reveal-y,
+        .project-stack.reveal-y,
+        .article-sidebar.reveal-y,
+        .article-card.reveal-y,
+        .footer-grid.reveal-y {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .stats-grid.reveal-y.visible .stat-item:nth-child(1),
+        .about-grid.reveal-y.visible .feature-card:nth-child(1),
+        .article-stack.reveal-y.visible .article-card:nth-child(1) {
+            transition-delay: 0s;
+        }
+
+        .stats-grid.reveal-y.visible .stat-item:nth-child(2),
+        .about-grid.reveal-y.visible .feature-card:nth-child(2),
+        .article-stack.reveal-y.visible .article-card:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .stats-grid.reveal-y.visible .stat-item:nth-child(3),
+        .about-grid.reveal-y.visible .feature-card:nth-child(3),
+        .article-stack.reveal-y.visible .article-card:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .stats-grid.reveal-y.visible .stat-item:nth-child(4) {
+            transition-delay: 0.45s;
+        }
+
+        .about-grid.reveal-y.visible > .section-title {
+            transition-delay: 0.05s;
+        }
+
+        .about-grid.reveal-y.visible > .about-copy > p:nth-of-type(1) {
+            transition-delay: 0.12s;
+        }
+
+        .about-grid.reveal-y.visible > .about-copy > p:nth-of-type(2) {
+            transition-delay: 0.24s;
+        }
+
+        .about-grid.reveal-y.visible .feature-card:nth-child(1) {
+            transition-delay: 0.34s;
+        }
+
+        .about-grid.reveal-y.visible .feature-card:nth-child(2) {
+            transition-delay: 0.49s;
+        }
+
+        .about-grid.reveal-y.visible .feature-card:nth-child(3) {
+            transition-delay: 0.64s;
+        }
+
+        .section-header-row.reveal-y.visible {
+            transition-delay: 0s;
+        }
+
+        .project-stack.reveal-y.visible {
+            transition-delay: 0s;
+        }
+
+        .article-sidebar.reveal-y.visible {
+            transition-delay: 0s;
+        }
+
+        .footer-grid.reveal-y.visible .footer-brand,
+        .footer-grid.reveal-y.visible .footer-col {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-grid.reveal-y .footer-brand,
+        .footer-grid.reveal-y .footer-col {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .footer-grid.reveal-y.visible .footer-brand {
+            transition-delay: 0s;
+        }
+
+        .footer-grid.reveal-y.visible .footer-col:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .footer-grid.reveal-y.visible .footer-col:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .footer-grid.reveal-y.visible .footer-col:nth-child(4) {
+            transition-delay: 0.45s;
+        }
+
+        .service-row {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .service-row.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-copy {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .service-media {
+            opacity: 1;
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 760ms cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: clip-path;
+        }
+
+        .service-row.visible .service-copy {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-row.visible .service-media {
+            clip-path: inset(0 0 0 0);
+        }
+
+        .service-row.visible .service-copy {
+            transition-delay: 0s;
+        }
+
+        .service-row.visible .service-media {
+            transition-delay: 0s;
+        }
+
+        .service-row.reverse.visible .service-copy {
+            transition-delay: 0s;
+        }
+
+        .project-stack {
+            display: grid;
+            gap: 0;
+        }
+
+        .project-stack .project-media,
+        .project-stack .project-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .project-stack.visible .project-media {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-stack.visible .project-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.15s;
+        }
+
+        .article-sidebar,
+        .article-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 720ms cubic-bezier(0.25, 1, 0.5, 1), transform 720ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .article-sidebar.visible,
+        .article-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .article-stack .article-card:nth-child(2).visible {
+            transition-delay: 0.15s;
+        }
+
+        .article-stack .article-card:nth-child(3).visible {
+            transition-delay: 0.3s;
+        }
+
+        .cta-bg,
+        .cta-watermark,
+        .cta-heading,
+        .cta-subline,
+        .cta-form {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 760ms cubic-bezier(0.25, 1, 0.5, 1), transform 760ms cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .cta-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(12, 24, 16, 0.24), rgba(12, 24, 16, 0.52)), url('/static/Rectangle.jpg') center center / cover no-repeat;
+            transform: none;
+        }
+
+        .cta-section.cta-active .cta-bg {
+            opacity: 1;
+        }
+
+        .cta-section.cta-active .cta-heading {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.18s;
+        }
+
+        .cta-section.cta-active .cta-subline {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.33s;
+        }
+
+        .cta-form {
+            width: min(720px, 100%);
+            margin: 10px auto 0;
+            padding: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.96);
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 0.35px;
+            box-shadow: 0 24px 60px rgba(5, 10, 7, 0.18);
+            transform-origin: center;
+            transform: scaleX(0.2);
         }
 
-        .quote-green {
-            color: #2f8b45;
-            font-weight: 700;
+        .cta-section.cta-active .cta-form {
+            opacity: 1;
+            transform: scaleX(1);
+            transition: opacity 760ms cubic-bezier(0.25, 1, 0.5, 1), transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+            transition-delay: 0.48s;
         }
 
-        .quote-black {
-            color: #1f1f1f;
-            font-weight: 500;
+        .cta-form input {
+            flex: 1 1 auto;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0 18px;
+            height: 54px;
+            font: inherit;
+            color: #171717;
+            font-size: 1rem;
         }
 
-        .topbar-left img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
+        .cta-watermark {
+            position: absolute;
+            left: 50%;
+            top: 54%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(6rem, 18vw, 16rem);
+            line-height: 0.92;
+            font-weight: 800;
+            letter-spacing: -0.08em;
+            color: rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+            white-space: nowrap;
         }
 
-        .brand {
-            text-decoration: none;
-            color: #43a106;
-            font-size: 3rem;
-            font-weight: 700;
-            font-family: 'OranginaWeb', 'Orangina', 'Orangine', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            letter-spacing: 0.6px;
-            line-height: 1;
+        .cta-section.cta-active .cta-watermark {
+            opacity: 1;
+            transition-delay: 1.15s;
         }
 
-        .menu {
-            width: auto;
+        .cta-inner {
+            position: relative;
+            z-index: 1;
+            width: min(900px, 100%);
+            display: grid;
+            gap: 22px;
+            text-align: center;
+        }
+
+        .cta-inner.is-loaded {
+            opacity: 1;
+            transform: none;
+        }
+
+        .cta-inner h2 {
+            font-size: clamp(2.3rem, 5vw, 4.2rem);
+            line-height: 1.02;
+            letter-spacing: -0.06em;
+            font-weight: 800;
+        }
+
+        .cta-inner p {
+            font-size: 1.02rem;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 64ch;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .cta-form input::placeholder {
+            color: #8c9198;
+        }
+
+        .cta-form button {
+            flex: 0 0 auto;
+            min-height: 54px;
+            border: none;
+            border-radius: 999px;
+            padding: 0 26px;
+            background: var(--cta);
+            color: #111111;
+            font: inherit;
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 180ms ease, filter 180ms ease;
+        }
+
+        .site-footer {
+            background: #ffffff;
+            border-top: 1px solid var(--line);
+            padding: 70px 0 46px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-block {
+            position: relative;
+            padding: 120px 0;
+            background: #ffffff;
+        }
+
+        .section-watermark {
+            position: absolute;
+            inset: 48px 0 auto;
+            pointer-events: none;
+            color: #eceff1;
+            font-size: clamp(3rem, 6vw, 6.2rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.07em;
+            white-space: normal;
+            opacity: 0.75;
+            width: var(--container);
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            gap: 32px;
+            align-items: start;
+        }
+
+        .section-title {
+            font-size: clamp(2.8rem, 4.6vw, 4.8rem);
+            line-height: 0.98;
+            letter-spacing: -0.06em;
+            font-weight: 900;
+            color: #111111;
+            max-width: 13ch;
+        }
+
+        .about-copy {
+            padding-top: 8px;
+        }
+
+        .about-copy p {
+            font-size: 1.05rem;
+            color: var(--muted);
+            line-height: 1.8;
+            max-width: 64ch;
+        }
+
+        .about-copy p + p {
+            margin-top: 14px;
+        }
+
+        .feature-row {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .feature-card {
+            min-height: 132px;
+            border-radius: var(--radius-sm);
+            background: #f8fafb;
+            border: 1px solid rgba(17, 17, 17, 0.05);
+            padding: 16px;
+            display: grid;
+            align-content: start;
+            gap: 12px;
+            box-shadow: 0 8px 30px rgba(10, 20, 12, 0.03);
+        }
+
+        .mini-icon {
+            width: 28px;
+            height: 28px;
+            color: var(--green);
+        }
+
+        .feature-card span:last-child {
+            font-size: 0.86rem;
+            color: #30343a;
+            line-height: 1.55;
+        }
+
+        .section-header-row {
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 28px;
-            font-size: 1.18rem;
-            font-weight: 600;
-            padding-right: 8px;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 32px;
         }
 
-        .menu a {
+        .section-label {
+            font-size: 0.92rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .see-all-link {
             text-decoration: none;
-            color: #3c3c3c;
-            padding: 6px 2px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: color 220ms ease;
+            color: var(--green-2);
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .services-wrap {
+            display: grid;
+            gap: 80px;
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 34px;
+            align-items: start; /* align heading to top of image */
+        }
+
+        /* Add a clean separator between service rows and more breathing room */
+        .service-row + .service-row {
+            border-top: 1px solid rgba(17,17,17,0.15);
+            padding-top: 46px;
+            margin-top: 46px;
+        }
+
+        /* Tweak the first and third service images so their subjects sit farther right in frame */
+        .service-row:first-of-type .service-media img {
+            object-position: 82% 18%;
+        }
+
+        .service-row:last-of-type .service-media img {
+            object-position: 78% 18%;
+        }
+
+        .service-row:first-of-type .service-media,
+        .service-row:last-of-type .service-media {
+            justify-self: end;
+        }
+
+        .service-row.reverse {
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        }
+
+        .service-row.reverse .service-copy {
+            order: 2;
+        }
+
+        .service-row.reverse .service-media {
+            order: 1;
+        }
+
+        .service-copy {
+            display: grid;
+            gap: 18px;
+            max-width: 560px;
+        }
+
+        .service-number {
+            color: #c2c6cb;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(17, 17, 17, 0.15); /* separator line */
+            margin-bottom: 14px;
+        }
+
+        .service-title {
+            font-size: clamp(2.2rem, 3.4vw, 3.6rem);
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+            font-weight: 800;
+            color: #111111;
+        }
+
+        .service-copy p {
+            font-size: 1.02rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .outline-pill {
+            width: fit-content;
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 999px;
+            border: 1px solid rgba(17, 17, 17, 0.18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #111111;
+            background: #ffffff;
+            font-size: 0.94rem;
+            font-weight: 700;
+        }
+
+        /* Service media: square images with reveal + zoom-out effect */
+        .service-media {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            aspect-ratio: 1 / 1; /* square image; change to 4/3, 3/2, etc. for other sizes */
+            background: #eef2f3;
+            max-width: 400px; /* ADJUST THIS to make images larger or smaller */
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(18px) scale(1.06);
+            transform-origin: center center;
+            transition: clip-path 640ms cubic-bezier(0.25, 1, 0.5, 1), transform 560ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 300ms ease;
+            will-change: clip-path, transform;
+        }
+
+        .service-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* adjust this to reposition the subject inside the frame (try: 'center top' or '50% 35%') */
+            object-position: 50% 20%;
+            display: block;
+        }
+
+        /* when revealed: first remove the clip (reveal top->bottom), then after a short delay zoom back to natural size */
+        .service-row.visible .service-media {
+            clip-path: inset(0 0 0 0);
+            transform: translateY(0) scale(1);
+            transition-delay: 0s, 260ms, 0s; /* clip-path no delay, transform delayed to create zoom-out after reveal */
+        }
+
+        /* Slightly reduce paragraph line-height for tighter layout */
+        .service-copy p {
+            line-height: 1.7;
+        }
+
+        .project-showcase .project-media {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            aspect-ratio: 16 / 8.5;
+            background: #edf1f0;
+        }
+
+        .project-showcase .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-card {
+            width: min(560px, calc(100% - 32px));
+            margin-left: auto;
+            margin-top: -92px;
+            position: relative;
+            z-index: 1;
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid rgba(17, 17, 17, 0.08);
+            box-shadow: 0 24px 70px rgba(10, 20, 12, 0.10);
+            padding: 26px;
+        }
+
+        .project-card h3 {
+            font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+            line-height: 1.04;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        .project-card p {
+            margin-top: 14px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .project-actions {
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .project-pagination {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .articles-layout {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.32fr) minmax(0, 0.68fr);
+            gap: 34px;
+            align-items: start;
+        }
+
+        .article-sidebar {
+            /* Make the sidebar sticky so it remains visible while the articles column scrolls. */
+            position: sticky;
+            top: 110px; /* offset from top to sit below the fixed header */
+            display: grid;
+            gap: 12px;
+            padding-top: 10px;
+            align-self: start;
+            z-index: 5;
+        }
+
+        .article-filter {
+            display: block;
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: #b3b6bb;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 180ms ease, color 180ms ease;
+        }
+
+        .article-filter.active {
+            background: #eef4ef;
+            color: #2d6c42;
+            font-weight: 700;
+        }
+
+        .article-filter.active::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 10px;
+            border-radius: 999px;
+            background: var(--green);
+            vertical-align: middle;
+        }
+
+        .article-stack {
+            display: grid;
+            gap: 28px;
+        }
+
+        .article-card {
+            display: grid;
+            gap: 16px;
+        }
+
+        .article-card img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .article-card h3 {
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+            max-width: 18ch;
+        }
+
+        .article-card p {
+            color: var(--muted);
+            line-height: 1.8;
+            max-width: 62ch;
+        }
+
+        .learn-link {
+            width: fit-content;
+            color: #2c6c45;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 700;
+        }
+
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+            min-height: 78vh;
+            display: grid;
+            place-items: center;
+            padding: 110px 20px;
+            color: #ffffff;
+            background: transparent;
+        }
+
+        .cta-section::before {
+            content: none;
+        }
+
+        .cta-inner {
+            position: relative;
+            z-index: 1;
+            width: min(900px, 100%);
+            display: grid;
+            gap: 22px;
+            text-align: center;
+        }
+
+        .cta-inner h2 {
+            font-size: clamp(2.3rem, 5vw, 4.2rem);
+            line-height: 1.02;
+            letter-spacing: -0.06em;
+            font-weight: 800;
+        }
+
+        .cta-inner p {
+            font-size: 1.02rem;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 64ch;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .cta-form,
+        .join-form {
+            width: min(720px, 100%);
+            margin: 10px auto 0;
+            padding: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.96);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 24px 60px rgba(5, 10, 7, 0.18);
+        }
+
+        .cta-form input,
+        .join-form input {
+            flex: 1 1 auto;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0 18px;
+            height: 54px;
+            font: inherit;
+            color: #171717;
+            font-size: 1rem;
+        }
+
+        .cta-form input::placeholder,
+        .join-form input::placeholder {
+            color: #8c9198;
+        }
+
+        .cta-form button,
+        .join-form button {
+            flex: 0 0 auto;
+            min-height: 54px;
+            border: none;
+            border-radius: 999px;
+            padding: 0 26px;
+            background: var(--cta);
+            color: #111111;
+            font: inherit;
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 180ms ease, filter 180ms ease;
+        }
+
+        .cta-form button:hover,
+        .cta-form button:focus-visible,
+        .join-form button:hover,
+        .join-form button:focus-visible {
+            transform: translateY(-1px);
+            filter: brightness(1.03);
+        }
+
+        .site-footer {
+            background: #ffffff;
+            border-top: 1px solid var(--line);
+            padding: 70px 0 46px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: minmax(240px, 1.2fr) repeat(3, minmax(150px, 0.7fr));
+            gap: 26px;
+        }
+
+        .footer-brand {
+            display: grid;
+            gap: 14px;
+            max-width: 320px;
+        }
+
+        .footer-brand .brand-lockup {
+            color: #111111;
+        }
+
+        .footer-brand p,
+        .footer-col a,
+        .footer-col span {
+            color: #8a8f96;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            text-decoration: none;
+        }
+
+        .footer-col {
+            display: grid;
+            gap: 12px;
+            align-content: start;
+        }
+
+        .footer-col h4 {
+            color: #111111;
+            font-size: 0.96rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 10px;
+        }
+
+        .footer-links a:hover,
+        .footer-links a:focus-visible {
+            color: #2e5f34;
+        }
+
+        .status-banner {
+            margin-top: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-size: 0.92rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-banner.dark {
+            background: #f4f6f7;
+            color: #2b2f33;
+            border-color: rgba(17, 17, 17, 0.06);
         }
 
         .account-menu {
@@ -119,482 +1330,669 @@
         }
 
         .account-toggle {
-            background: transparent;
-            border: none;
-            color: #3c3c3c;
-            font-size: 1.18rem;
-            font-weight: 600;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            border: 1px solid rgba(17, 17, 17, 0.12);
+            border-radius: 999px;
+            padding: 0 14px 0 6px;
+            min-height: 40px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #1b1f23;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
         }
 
         .account-icon {
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            border: 2px solid #3c3c3c;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.88rem;
-            font-weight: 700;
+            display: grid;
+            place-items: center;
+            background: #eef4ef;
+            color: #2f6f3a;
+            font-size: 0.82rem;
+            font-weight: 800;
         }
 
         .account-dropdown {
             position: absolute;
-            top: 130%;
+            top: calc(100% + 10px);
             right: 0;
             min-width: 220px;
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
-            padding: 10px;
+            padding: 12px;
+            border-radius: 18px;
+            border: 1px solid rgba(17, 17, 17, 0.08);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 18px 46px rgba(10, 20, 12, 0.12);
             display: none;
-            z-index: 10;
         }
 
         .account-dropdown.open {
-            display: block;
+            display: grid;
+            gap: 8px;
         }
 
         .account-dropdown p {
-            font-size: 0.84rem;
-            color: #4e4e4e;
-            margin-bottom: 8px;
+            color: #7c8288;
+            font-size: 0.9rem;
         }
 
         .account-dropdown a {
             display: block;
+            padding: 10px 12px;
+            border-radius: 12px;
             text-decoration: none;
-            color: #2f5f00;
-            font-size: 0.93rem;
-            font-weight: 600;
-            padding: 8px 10px;
-            border-radius: 8px;
-        }
-
-        .account-dropdown a:hover {
-            background: #eef8e3;
-        }
-
-        .menu a:hover,
-        .menu a:focus-visible {
-            color: #43a106;
-            text-shadow: none;
-        }
-
-        .language-form {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .language-form select {
-            border: 1px solid #d7d7d7;
-            border-radius: 999px;
-            padding: 6px 12px;
-            font-size: 0.98rem;
-            color: #3c3c3c;
-            background: #ffffff;
-            outline: none;
-        }
-
-        .hero {
-            min-height: calc(100vh - 82px);
-            background: url('/static/home/hero-Desktop - 13.png'), url('/static/Desktop - 13.png');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-        .hero-card {
-            width: min(1260px, 96%);
-            min-height: 550px;
-            background: rgba(255, 255, 255, 0.10);
-            border: 1px solid rgba(255, 255, 255, 0.38);
-            backdrop-filter: blur(14px) saturate(125%);
-            -webkit-backdrop-filter: blur(14px) saturate(125%);
-            text-align: center;
-            display: grid;
-            place-content: center;
-            padding: 20px;
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.20);
-        }
-
-        .logo-badge {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            margin: 0 auto 18px;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
-
-        .logo-badge img {
-            width: 62%;
-            height: 62%;
-            object-fit: contain;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 4.1rem);
-            line-height: 1.1;
-            color: #ffffff;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.42);
-            margin-bottom: 8px;
-            font-family: 'OranginaWeb', 'Orangina', 'Orangine', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #24512d;
+            font-size: 0.95rem;
             font-weight: 700;
         }
 
-        .hero-sub {
-            color: #ffffff;
-            margin-bottom: 2px;
-            font-size: clamp(0.95rem, 2vw, 1.2rem);
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        .account-dropdown a:hover,
+        .account-dropdown a:focus-visible {
+            background: #eef6ef;
         }
 
-        .status-pill {
-            display: inline-block;
-            margin-top: 14px;
-            padding: 8px 14px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #ffffff;
-            font-size: 0.92rem;
+        .mobile-nav-toggle {
+            display: none;
         }
 
-        .predict-button {
-            display: inline-block;
-            margin-top: 18px;
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 1.08rem;
-            font-weight: 700;
-            padding: 10px 22px;
-            border-radius: 12px;
-            border: 2px solid #ffffff;
-            background: linear-gradient(135deg, #54b51b, #3f8f10);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
-        }
-
-        .predict-button:hover {
-            filter: brightness(1.05);
-        }
-
-        .section-about {
-            background: #ffffff;
-            padding: 24px 16px 30px;
-            min-height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section-about h2,
-        .section-contact h2 {
-            font-size: clamp(2rem, 3.6vw, 2.6rem);
-            font-weight: 900;
-            margin-bottom: 100px;
-            letter-spacing: 0.2px;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 16px;
-            align-items: start;
-        }
-
-        .about-photo {
-            min-height: 450px;
-            border-radius: 8px;
-            background: url('/static/Rectangle.jpg'), url('/static/bg.jpg');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            opacity: 0;
-            transform: translateX(-56px);
-            transition: transform 700ms ease, opacity 700ms ease;
-        }
-
-        .about-copy {
-            font-size: 1.2rem;
-            color: #151515;
-            text-align: left;
-            opacity: 0;
-            transform: translateX(56px);
-            transition: transform 700ms ease, opacity 700ms ease;
-        }
-
-        .section-about.is-visible .about-photo,
-        .section-about.is-visible .about-copy {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .section-about.is-visible .about-copy {
-            transition-delay: 120ms;
-        }
-
-        .about-copy p + p {
-            margin-top: 14px;
-        }
-
-        .section-contact {
-            background: var(--green-main);
-            color: #fff;
-            padding: 28px 16px 36px;
-            position: relative;
-            overflow: hidden;
-            min-height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tree-mark {
-            position: absolute;
-            right: 8%;
-            bottom: -10px;
-            width: min(350px, 44vw);
-            opacity: 0.16;
-            pointer-events: none;
-        }
-
-        .contact-grid {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 12px;
-            width: min(900px, 100%);
-            padding: 150px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.34);
-            background: rgba(255, 255, 255, 0.17);
-            backdrop-filter: blur(4px);
-            margin: auto auto 0;
-            align-self: center;
-            opacity: 0;
-            transform: translateY(56px) scale(0.98);
-            transition: transform 700ms ease, opacity 700ms ease, box-shadow 320ms ease;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-        }
-
-        .section-contact.is-visible .contact-grid {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .contact-grid:hover {
-            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-item {
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .icon-dot {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.22);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #f4f4f4;
-            padding: 18px 8px 0;
-            position: relative;
-            z-index: 1;
-            margin-top: auto;
-            width: 100%;
+        .is-reveal {
             opacity: 0;
             transform: translateY(20px);
-            transition: transform 700ms ease, opacity 700ms ease;
-            transition-delay: 160ms;
+            transition: opacity 700ms ease, transform 700ms ease;
         }
 
-        .section-contact.is-visible .footer {
+        .is-reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        @media (max-width: 960px) {
-            .topbar {
-                height: auto;
-                gap: 8px;
+        @keyframes floatY {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(4px);
+            }
+        }
+
+        @media (max-width: 1180px) {
+            .site-header {
+                width: min(1380px, calc(100vw - 24px));
+                border-radius: 24px;
                 flex-wrap: wrap;
                 justify-content: center;
-                padding: 10px;
             }
 
-            .topbar-left,
-            .menu {
-                width: auto;
-            }
-
-            .brand {
-                font-size: 2rem;
-            }
-
-            .menu {
-                gap: 16px;
-                font-size: 1rem;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
+            .site-nav {
                 width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            .nav-group,
+            .nav-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .section-shell {
+                width: min(1380px, calc(100vw - 24px));
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 960px) {
+            .stats-grid,
+            .about-grid,
+            .service-row,
+            .service-row.reverse,
+            .articles-layout,
+            .footer-grid,
+            .feature-row {
+                grid-template-columns: 1fr;
+            }
+
+            .site-header {
+                padding: 14px 16px;
+            }
+
+            .site-nav {
+                gap: 14px;
             }
 
             .hero {
-                min-height: calc(100vh - 64px);
-                background-attachment: scroll;
+                padding-top: 140px;
             }
 
-            .section-about,
-            .section-contact {
-                min-height: 100vh;
+            .hero h1 {
+                font-size: clamp(3.5rem, 16vw, 6rem);
+            }
+
+            .section-block {
+                padding: 96px 0;
+            }
+
+            .services-wrap {
+                gap: 64px;
+            }
+
+            .project-card {
+                width: 100%;
+                margin-top: 18px;
+            }
+
+            .article-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --container: calc(100vw - 20px);
+            }
+
+            .site-header {
+                top: 10px;
+                border-radius: 20px;
+            }
+
+            .site-nav {
+                gap: 12px;
+            }
+
+            .site-nav a {
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding-top: 160px;
+                min-height: 100svh;
+            }
+
+            .hero p {
+                margin-top: 18px;
+                font-size: 0.98rem;
+            }
+
+            .hero-footer-cue {
+                bottom: 18px;
+            }
+
+            .section-title {
+                font-size: clamp(2.2rem, 12vw, 3.2rem);
+            }
+
+            .project-card,
+            .cta-form,
+            .join-form {
+                border-radius: 22px;
+            }
+
+            .cta-form,
+            .join-form {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .cta-form input,
+            .cta-form button,
+            .join-form input,
+            .join-form button {
+                width: 100%;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .about-photo,
-            .about-copy,
-            .contact-grid,
-            .footer {
-                transition: none;
-                opacity: 1;
-                transform: none;
+            html {
+                scroll-behavior: auto;
+            }
+
+            .scroll-circle,
+            .hero-pill,
+            .contact-btn,
+            .cta-form button,
+            .join-form button,
+            .reveal-y,
+            .service-row,
+            .article-card,
+            .cta-section {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="page">
-        <header class="topbar">
-            <div class="topbar-left">
-                <img src="/static/sprout.png" alt="Sprout icon">
-                <span><span class="quote-green">EMPOWERING</span> <span class="quote-black">DIGITAL AGRICULTURE</span></span>
-            </div>
+        <header class="site-header" id="site-header">
+            <a class="brand-lockup" href="#home" aria-label="HarvestIQ home">
+                <span class="brand-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                        <path d="M12 3.25c4.65 0 8.25 3.35 8.25 7.65 0 4.92-4.08 9.35-8.25 9.35S3.75 16.02 3.75 11.1c0-3.9 2.9-7.85 8.25-7.85zm-.35 4.07c-1.58 1.1-2.57 2.77-2.91 4.98 2.18-.33 3.92-1.28 5.06-2.82.34-.46.58-.98.75-1.54-.56-.17-1.12-.27-1.67-.27-.5 0-.96.06-1.23.15z" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="brand-name">HarvestIQ</span>
+            </a>
 
-            <a class="brand" id="brand-link" href="/">AGRIFLASK</a>
-
-            <nav class="menu" aria-label="Main menu">
-                <a href="#home">{{ t('nav.home') }}</a>
-                <a href="#about">{{ t('nav.about') }}</a>
-                <a href="#contact">{{ t('nav.contact') }}</a>
-                <form class="language-form" method="POST" action="/set-language">
-                    <select name="language" onchange="this.form.submit()" aria-label="{{ t('nav.language') }}">
-                        <option value="en" {% if selected_language == 'en' %}selected{% endif %}>English</option>
-                        <option value="hi" {% if selected_language == 'hi' %}selected{% endif %}>Hindi</option>
-                        <option value="ta" {% if selected_language == 'ta' %}selected{% endif %}>Tamil</option>
-                    </select>
-                </form>
-                {% if current_user.is_authenticated %}
-                <div class="account-menu">
-                    <button type="button" class="account-toggle" id="account-toggle" aria-haspopup="true" aria-expanded="false">
-                        <span class="account-icon">{{ current_user.user_id[:1] | upper }}</span>
-                        {{ current_user.user_id }}
-                    </button>
-                    <div class="account-dropdown" id="account-dropdown">
-                        <p>Role: {{ current_user.role }}</p>
-                        <a href="/login?edit=1">{{ t('nav.account.edit') }}</a>
-                        <a href="/logout">{{ t('nav.account.logout') }}</a>
-                    </div>
+            <nav class="site-nav" aria-label="Main navigation">
+                <div class="nav-group">
+                    <a href="#home">Home</a>
+                    <a href="#about">About us</a>
+                    <a href="#services">Services</a>
+                    <a href="#project">Project</a>
+                    <a href="#articles">Articles</a>
                 </div>
-                {% else %}
-                <a href="/login" id="login-link">{{ t('nav.login') }}</a>
-                {% endif %}
+
+                <div class="nav-actions">
+                    <form class="language-form" method="POST" action="/set-language">
+                        <select name="language" onchange="this.form.submit()" aria-label="Language">
+                            <option value="en" {% if selected_language == 'en' %}selected{% endif %}>English</option>
+                            <option value="hi" {% if selected_language == 'hi' %}selected{% endif %}>Hindi</option>
+                            <option value="ta" {% if selected_language == 'ta' %}selected{% endif %}>Tamil</option>
+                        </select>
+                    </form>
+
+                    {% if current_user.is_authenticated %}
+                    <div class="account-menu">
+                        <button type="button" class="account-toggle" id="account-toggle" aria-haspopup="true" aria-expanded="false">
+                            <span class="account-icon">{{ current_user.user_id[:1] | upper }}</span>
+                            {{ current_user.user_id }}
+                        </button>
+                        <div class="account-dropdown" id="account-dropdown">
+                            <p>Role: {{ current_user.role }}</p>
+                            <a href="/login?edit=1">Change Role</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a class="contact-btn" href="/login">Login</a>
+                    {% endif %}
+
+                    <a class="contact-btn" href="#footer">Contact us</a>
+                </div>
             </nav>
         </header>
 
-        <section id="home" class="hero">
-            <div class="hero-card">
-                <div class="logo-badge">
-                    <img src="/static/Vector2.png" alt="Leaf logo">
+        <main>
+            <section id="home" class="hero">
+                <div class="hero-inner">
+                    <div class="hero-kicker">
+                        <span style="width:7px;height:7px;border-radius:999px;background:#b5c222;display:inline-block"></span>
+                        Smart agriculture, reimagined
+                    </div>
+                    <h1>HarvestIQ.</h1>
+                    <p>Modern crop intelligence for sustainable farming. We combine field data, machine learning, and practical agricultural insight to help every decision feel clearer, faster, and more confident.</p>
+                    <div class="hero-actions">
+                        {% if current_user.is_authenticated %}
+                        <a class="hero-pill primary" href="/go-predict">Start prediction</a>
+                        {% else %}
+                        <a class="hero-pill primary" href="/login">Login to predict</a>
+                        {% endif %}
+                        <a class="hero-pill secondary" href="#about">Explore the page</a>
+                    </div>
+                    {% if status_message %}
+                    <div class="status-banner">{{ status_message }}</div>
+                    {% endif %}
                 </div>
-                <h1>{{ t('home.title') }}</h1>
-                <p class="hero-sub">{{ t('home.subtitle') }}</p>
-                {% if status_message %}
-                <div class="status-pill">{{ status_message }}</div>
-                {% endif %}
-                {% if current_user.is_authenticated %}
-                <a class="predict-button" href="/go-predict">{{ t('home.predict') }}</a>
-                {% endif %}
-            </div>
-        </section>
 
-        <section id="about" class="section-about">
-            <h2>{{ t('home.about_title') }}</h2>
-            <div class="about-grid">
-                <div class="about-photo" aria-hidden="true"></div>
-                <div class="about-copy">
-                    <p>{{ t('home.about_text_1') }}</p>
-                    <p>{{ t('home.about_text_2') }}</p>
+                <div class="hero-footer-cue">
+                    <span>Explore more</span>
+                    <span class="scroll-circle" aria-hidden="true"></span>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="contact" class="section-contact">
-            <h2>{{ t('home.contact_title') }}</h2>
-            <img class="tree-mark" src="/static/Vector.png" alt="">
-            <div class="contact-grid">
-                <div class="contact-item"><span class="icon-dot">📞</span>+91 12924 98765</div>
-                <div class="contact-item"><span class="icon-dot">🌐</span>agriflask.com</div>
-                <div class="contact-item"><span class="icon-dot">💬</span>@agriflask</div>
-                <div class="contact-item"><span class="icon-dot">📍</span>Potheri, Chennai Hostel, Chennai</div>
-                <div class="contact-item"><span class="icon-dot">✉</span>hello@agriflask.com</div>
-                <div class="contact-item"><span class="icon-dot">🔗</span>Facebook · X · Instagram</div>
-            </div>
-            <footer class="footer">AGRIFLASK</footer>
-        </section>
+            <section class="stats-bar">
+                <div class="section-shell">
+                    <div class="stats-grid reveal-y">
+                        <div class="stat-item">
+                            <span class="stat-value">2+</span>
+                            <span class="stat-label">Year of Experience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">50+</span>
+                            <span class="stat-label">Field in Progress</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">175+</span>
+                            <span class="stat-label">Farmers Around India</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">₹3 Crores+</span>
+                            <span class="stat-label">Agriculture Profit</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="section-block">
+                <div class="section-watermark reveal-y">Transforming Agriculture with Smart Solutions For Sustainable Future</div>
+                <div class="section-shell">
+                    <div class="about-grid reveal-y">
+                        <h2 class="section-title">Innovating the Future of Agriculture</h2>
+                        <div class="about-copy">
+                            <p>HarvestIQ is built around a simple idea: give farmers and analysts a cleaner way to read the field. By blending crop data, environmental context, and machine intelligence, we turn complex agricultural inputs into confident decisions.</p>
+                            <p>The result is a system that feels modern and highly usable, yet still grounded in practical farm conditions. The interface stays minimal so the information feels calm, clear, and easy to trust.</p>
+
+                            <div class="feature-row">
+                                <div class="feature-card">
+                                    <span class="mini-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 20V10"></path>
+                                            <path d="M8.5 12.5c0-3.2 1.8-5.8 4-7.2 2.3 1.4 4 4 4 7.2 0 2.2-1.5 4.2-4 5.5-2.5-1.3-4-3.3-4-5.5Z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>Soil Health Improvement</span>
+                                </div>
+                                <div class="feature-card">
+                                    <span class="mini-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 4a8 8 0 0 0 0 16"></path>
+                                            <path d="M12 4a8 8 0 0 1 0 16"></path>
+                                            <path d="M4 12h16"></path>
+                                        </svg>
+                                    </span>
+                                    <span>Predictive Crop Analysis</span>
+                                </div>
+                                <div class="feature-card">
+                                    <span class="mini-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M6 19V8"></path>
+                                            <path d="M12 19V5"></path>
+                                            <path d="M18 19v-9"></path>
+                                            <path d="M5 19h14"></path>
+                                        </svg>
+                                    </span>
+                                    <span>Technology Integration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="services" class="section-block">
+                <div class="section-shell">
+                    <div class="section-header-row reveal-y">
+                        <div>
+                            <div class="section-label">Service</div>
+                        </div>
+                        <a class="see-all-link" href="#footer">See all</a>
+                    </div>
+
+                    <div class="services-wrap">
+                        <article class="service-row">
+                            <div class="service-copy">
+                                <div class="service-number">01</div>
+                                <h3 class="service-title">Crop advisory built for real field conditions.</h3>
+                                <p>Use the farmer-friendly flow to transform simple observations into reliable recommendations. The system keeps the interface calm while still making the model output feel meaningful.</p>
+                                <a class="outline-pill" href="/login">Read more</a>
+                            </div>
+                            <div class="service-media">
+                                <img src="/static/farmers.jpg" alt="Hands holding crops">
+                            </div>
+                        </article>
+
+                        <article class="service-row reverse">
+                            <div class="service-copy">
+                                <div class="service-number">02</div>
+                                <h3 class="service-title">Analyst-ready prediction with historical context.</h3>
+                                <p>The analyst view keeps the numeric workflow strict, then expands the answer with feature importance, crop statistics, and a sharper read on the predicted profile.</p>
+                                <a class="outline-pill" href="/login">Read more</a>
+                            </div>
+                            <div class="service-media">
+                                <img src="/static/analyst.jpg" alt="Agricultural drone over field">
+                            </div>
+                        </article>
+
+                        <article class="service-row">
+                            <div class="service-copy">
+                                <div class="service-number">03</div>
+                                <h3 class="service-title">A student view focused on learning the model.</h3>
+                                <p>Students get a simpler result that still explains why the model responded the way it did. That keeps the experience educational without making it feel overwhelming.</p>
+                                <a class="outline-pill" href="/login">Read more</a>
+                            </div>
+                            <div class="service-media">
+                                <img src="/static/student.jpg" alt="Student examining plants">
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="project" class="section-block project-showcase">
+                <div class="section-shell">
+                    <div class="section-header-row reveal-y">
+                        <div class="section-label">Project</div>
+                        <a class="see-all-link" href="#articles">See all</a>
+                    </div>
+
+                    <div class="project-stack reveal-y">
+                        <div class="project-media">
+                            <img src="/static/bg.jpg" alt="Cows in a field">
+                        </div>
+                        <div class="project-card">
+                            <h3>Bowery AgroField</h3>
+                            <p>HarvestIQ helps present farm intelligence with a cleaner interface and a stronger visual rhythm. This showcase card keeps the structure simple while still making the project feel premium and editorial.</p>
+                            <div class="project-actions">
+                                <a class="outline-pill" href="/login">Read more</a>
+                                <div class="project-pagination">
+                                    <span>Prev</span>
+                                    <span>Next -&gt;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="articles" class="section-block">
+                <div class="section-shell">
+                    <div class="section-header-row reveal-y">
+                        <div class="section-label">Articles</div>
+                        <a class="see-all-link" href="#footer">See all</a>
+                    </div>
+
+                    <div class="articles-layout">
+                        <aside class="article-sidebar reveal-y">
+                            <a class="article-filter active" href="#articles" data-article-filter data-category="latest">Latest</a>
+                            <a class="article-filter" href="#articles" data-article-filter data-category="crop-management">Crop Management</a>
+                            <a class="article-filter" href="#articles" data-article-filter data-category="technology">Technology and Innovation</a>
+                            <a class="article-filter" href="#articles" data-article-filter data-category="health">Health and Wellness</a>
+                        </aside>
+
+                        <div class="article-stack">
+                            <article class="article-card reveal-y" data-article-card data-category="latest">
+                                <img src="/static/Smart Crop.jpg" alt="Tractor in the field">
+                                <h3>Smart crop recommendations boost yields by 40%</h3>
+                                <p>HarvestIQ's machine learning model analyzes soil composition, weather patterns, and historical data to recommend the most profitable crop for your field. Farmers using our predictions have reported consistent yield improvements.</p>
+                                <a class="learn-link" href="/login">Learn more</a>
+                            </article>
+
+                            <article class="article-card reveal-y" data-article-card data-category="crop-management">
+                                <img src="/static/soil health.jpg" alt="Hands examining soil and plants">
+                                <h3>Soil health and crop rotation strategy</h3>
+                                <p>Effective crop rotation prevents soil depletion and reduces pest pressure. HarvestIQ recommends crop sequences that enhance soil fertility while maximizing long-term profitability for your farming operation.</p>
+                                <a class="learn-link" href="/login">Learn more</a>
+                            </article>
+
+                            <article class="article-card reveal-y" data-article-card data-category="technology">
+                                <img src="/static/precision farming.jpg" alt="Agricultural drone over crops">
+                                <h3>Precision farming meets AI: the future of agriculture</h3>
+                                <p>Drones, sensors, and machine learning algorithms work together to transform raw field data into actionable insights. HarvestIQ integrates these technologies seamlessly to give you real-time decision support.</p>
+                                <a class="learn-link" href="/login">Learn more</a>
+                            </article>
+
+                            <article class="article-card reveal-y" data-article-card data-category="health">
+                                <img src="/static/sustainable.jpg" alt="Farmer with healthy crops">
+                                <h3>Sustainable farming leads to better nutrition and farmer prosperity</h3>
+                                <p>By optimizing crop selection for local conditions, farmers grow more nutritious crops, improve food security, and build sustainable livelihoods. Healthier crops mean healthier communities and stronger rural economies.</p>
+                                <a class="learn-link" href="/login">Learn more</a>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section" id="cta">
+                <div class="cta-bg" aria-hidden="true"></div>
+                <div class="cta-watermark" aria-hidden="true">HarvestIQ</div>
+                <div class="cta-inner">
+                    <h2 class="cta-heading">Discover how our advanced tools transform your fields and boost your yields.</h2>
+                    <p class="cta-subline">Join the HarvestIQ approach to modern farm intelligence. Keep your team aligned, your predictions clear, and your decisions grounded in the real conditions of the field.</p>
+                    <form class="cta-form" method="GET" action="/login">
+                        <input type="email" name="email" placeholder="Your email here" aria-label="Your email here">
+                        <button type="submit">Join now</button>
+                    </form>
+                </div>
+            </section>
+
+            <footer class="site-footer" id="footer">
+                <div class="section-shell">
+                    <div class="footer-grid reveal-y">
+                        <div class="footer-brand">
+                            <a class="brand-lockup" href="#home" aria-label="HarvestIQ home">
+                                <span class="brand-icon">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                        <path d="M12 3.25c4.65 0 8.25 3.35 8.25 7.65 0 4.92-4.08 9.35-8.25 9.35S3.75 16.02 3.75 11.1c0-3.9 2.9-7.85 8.25-7.85zm-.35 4.07c-1.58 1.1-2.57 2.77-2.91 4.98 2.18-.33 3.92-1.28 5.06-2.82.34-.46.58-.98.75-1.54-.56-.17-1.12-.27-1.67-.27-.5 0-.96.06-1.23.15z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-name">HarvestIQ</span>
+                            </a>
+                            <p>Smart crop recommendation and field intelligence for modern agriculture teams. Potheri, Chennai. hello@harvestiq.com</p>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Navigation</h4>
+                            <div class="footer-links">
+                                <a href="#home">Home</a>
+                                <a href="#about">About us</a>
+                                <a href="#services">Services</a>
+                                <a href="#project">Portfolio</a>
+                                <a href="#articles">Articles</a>
+                            </div>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Project</h4>
+                            <div class="footer-links">
+                                <a href="/go-predict">Prediction flow</a>
+                                <a href="/login">Role access</a>
+                                <a href="/farmer-predictor">Farmer view</a>
+                                <a href="/analyst-predictor">Analyst view</a>
+                                <a href="/student-predictor">Student view</a>
+                            </div>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Support</h4>
+                            <div class="footer-links">
+                                <span>+91 12924 98765</span>
+                                <span>hello@harvestiq.com</span>
+                                <span>@harvestiq</span>
+                                <span>Facebook · X · Instagram</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </main>
     </div>
 
     <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        window.scrollTo(0, 0);
+
         document.addEventListener('DOMContentLoaded', () => {
-            const isLiveServer = window.location.port === '5500';
-            const brandLink = document.getElementById('brand-link');
-            const loginLink = document.getElementById('login-link');
+            const header = document.getElementById('site-header');
+            const hero = document.querySelector('.hero');
             const accountToggle = document.getElementById('account-toggle');
             const accountDropdown = document.getElementById('account-dropdown');
+            const articleSection = document.getElementById('articles');
+            const articleFilters = Array.from(document.querySelectorAll('[data-article-filter]'));
+            const articleCards = Array.from(document.querySelectorAll('[data-article-card]'));
+            const revealTargets = document.querySelectorAll('.reveal-y, .service-row, .article-card, .cta-section');
 
-            if (isLiveServer) {
-                // Fallback when opening templates directly via Live Server.
-                if (brandLink) brandLink.href = '/templates/home.html';
-                if (loginLink) loginLink.href = '/templates/login.html';
-            }
+            window.requestAnimationFrame(() => {
+                if (hero) {
+                    hero.classList.add('hero-ready');
+                }
+            });
+
+            const updateHeader = () => {
+                if (!header) return;
+                header.classList.toggle('scrolled', window.scrollY > 30);
+            };
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+
+            /*
+             * Article filter syncing logic with IntersectionObserver
+             * - uses IntersectionObserver to detect which article is in the viewport
+             * - automatically updates the sidebar filter to match the visible article
+             * - supports clicking a filter to scroll to that article
+             * - sidebar stays sticky while articles scroll
+             */
+            const filtersByCategory = {};
+            articleFilters.forEach((f) => {
+                const cat = f.dataset.category || 'latest';
+                filtersByCategory[cat] = f;
+
+                // Click handler to scroll to matching article
+                f.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(`[data-article-card][data-category="${cat}"]`);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            const setActiveArticleFilterByCategory = (cat) => {
+                if (!articleFilters.length) return;
+                articleFilters.forEach((f) => {
+                    f.classList.toggle('active', f.dataset.category === cat);
+                });
+            };
+
+            // Update filter based on the article closest to a viewport marker.
+            const updateArticleFilter = () => {
+                if (!articleCards.length) return;
+
+                const marker = Math.min(window.innerHeight * 0.35, 260);
+                let activeCategory = articleCards[0].dataset.category || 'latest';
+
+                for (const card of articleCards) {
+                    const rect = card.getBoundingClientRect();
+
+                    if (rect.top <= marker) {
+                        activeCategory = card.dataset.category || 'latest';
+                    } else {
+                        break;
+                    }
+                }
+
+                setActiveArticleFilterByCategory(activeCategory);
+            };
+
+            // Set default on load
+            setActiveArticleFilterByCategory('latest');
+            
+            // Update on scroll and resize so the marker stays aligned with the viewport.
+            window.addEventListener('scroll', updateArticleFilter, { passive: true });
+            window.addEventListener('resize', updateArticleFilter, { passive: true });
+            updateArticleFilter();
 
             if (accountToggle && accountDropdown) {
                 accountToggle.addEventListener('click', () => {
@@ -610,24 +2008,35 @@
                 });
             }
 
-            const sectionsToAnimate = document.querySelectorAll('.section-about, .section-contact');
-            if (!sectionsToAnimate.length || !('IntersectionObserver' in window)) {
+            if (!('IntersectionObserver' in window)) {
+                revealTargets.forEach((element) => {
+                    element.classList.add('visible');
+
+                    if (element.classList.contains('cta-section')) {
+                        element.classList.add('cta-active');
+                    }
+                });
                 return;
             }
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    } else {
-                        entry.target.classList.remove('is-visible');
+                        entry.target.classList.add('visible');
+
+                        if (entry.target.classList.contains('cta-section')) {
+                            window.setTimeout(() => {
+                                entry.target.classList.add('cta-active');
+                            }, 80);
+                        }
                     }
                 });
             }, {
-                threshold: 0.35
+                threshold: 0.18,
+                rootMargin: '0px 0px -10% 0px'
             });
 
-            sectionsToAnimate.forEach((section) => observer.observe(section));
+            revealTargets.forEach((element) => observer.observe(element));
         });
     </script>
 </body>

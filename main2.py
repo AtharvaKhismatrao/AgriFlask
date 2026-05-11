@@ -11,6 +11,27 @@ import mysql.connector
 from mysql.connector import Error as MySQLError
 from werkzeug.security import check_password_hash, generate_password_hash
 
+def load_local_env(env_path: str = ".env") -> None:
+    """Load simple KEY=VALUE pairs from a local .env file into process env."""
+    if not os.path.exists(env_path):
+        return
+
+    with open(env_path, "r", encoding="utf-8") as env_file:
+        for line in env_file:
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#") or "=" not in stripped:
+                continue
+
+            key, value = stripped.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
+
+# Load environment variables from local .env when available.
+load_local_env()
+
 app = Flask(__name__)
 app.secret_key = "agriflask-session-key"
 
@@ -29,15 +50,15 @@ TRANSLATIONS = {
         "nav.language": "Language",
         "nav.account.edit": "Change Role",
         "nav.account.logout": "Logout",
-        "home.title": "AGRIFLASK",
+        "home.title": "HarvestIQ",
         "home.subtitle": "Smart Crop Prediction System",
         "home.predict": "Prediction",
         "home.about_title": "ABOUT US",
-        "home.about_text_1": "AGRIFLASK is a smart crop prediction system designed to assist different stakeholders in agriculture by providing data-driven crop recommendations. The system uses machine learning techniques to analyze soil and environmental parameters such as nitrogen, phosphorus, potassium, temperature, humidity, pH level, and rainfall to predict the most suitable crop for cultivation.",
-        "home.about_text_2": "By combining machine learning, data analysis, and an intuitive user interface, AGRIFLASK aims to bridge the gap between agricultural data and real-world applications, contributing toward smarter and more sustainable farming practices.",
+        "home.about_text_1": "HarvestIQ is a smart crop prediction system designed to assist different stakeholders in agriculture by providing data-driven crop recommendations. The system uses machine learning techniques to analyze soil and environmental parameters such as nitrogen, phosphorus, potassium, temperature, humidity, pH level, and rainfall to predict the most suitable crop for cultivation.",
+        "home.about_text_2": "By combining machine learning, data analysis, and an intuitive user interface, HarvestIQ aims to bridge the gap between agricultural data and real-world applications, contributing toward smarter and more sustainable farming practices.",
         "home.contact_title": "Contact Us",
-        "login.title": "AGRIFLASK | Login",
-        "login.brand": "AGRIFLASK",
+        "login.title": "HarvestIQ | Login",
+        "login.brand": "HarvestIQ",
         "login.subtitle": "Smart Crop Prediction System",
         "login.welcome": "Welcome",
         "login.manage": "Manage Account",
@@ -54,7 +75,7 @@ TRANSLATIONS = {
         "login.role_student": "Student",
         "login.placeholder_role": "Select your role",
         "login.status": "",
-        "farmer.title": "AGRIFLASK",
+        "farmer.title": "HarvestIQ",
         "farmer.subtitle": "Qualitative field inputs converted to model values",
         "farmer.submit": "Predict Crop (Farmer Mode)",
         "analyst.eyebrow": "Agricultural Analyst Workspace",
@@ -155,15 +176,15 @@ TRANSLATIONS = {
         "nav.language": "भाषा",
         "nav.account.edit": "भूमिका बदलें",
         "nav.account.logout": "लॉगआउट",
-        "home.title": "AGRIFLASK",
+        "home.title": "HarvestIQ",
         "home.subtitle": "स्मार्ट फसल भविष्यवाणी प्रणाली",
         "home.predict": "भविष्यवाणी",
         "home.about_title": "हमारे बारे में",
-        "home.about_text_1": "AGRIFLASK एक स्मार्ट फसल भविष्यवाणी प्रणाली है जो कृषि में अलग-अलग उपयोगकर्ताओं को डेटा-आधारित फसल सुझाव देने के लिए बनाई गई है। यह सिस्टम नाइट्रोजन, फॉस्फोरस, पोटैशियम, तापमान, आर्द्रता, pH स्तर और वर्षा जैसे मानकों का विश्लेषण करके सबसे उपयुक्त फसल की भविष्यवाणी करता है।",
-        "home.about_text_2": "मशीन लर्निंग, डेटा विश्लेषण और आसान इंटरफ़ेस को जोड़कर AGRIFLASK कृषि डेटा और वास्तविक जीवन के उपयोग के बीच की दूरी कम करने का प्रयास करता है।",
+        "home.about_text_1": "HarvestIQ एक स्मार्ट फसल भविष्यवाणी प्रणाली है जो कृषि में अलग-अलग उपयोगकर्ताओं को डेटा-आधारित फसल सुझाव देने के लिए बनाई गई है। यह सिस्टम नाइट्रोजन, फॉस्फोरस, पोटैशियम, तापमान, आर्द्रता, pH स्तर और वर्षा जैसे मानकों का विश्लेषण करके सबसे उपयुक्त फसल की भविष्यवाणी करता है।",
+        "home.about_text_2": "मशीन लर्निंग, डेटा विश्लेषण और आसान इंटरफ़ेस को जोड़कर HarvestIQ कृषि डेटा और वास्तविक जीवन के उपयोग के बीच की दूरी कम करने का प्रयास करता है।",
         "home.contact_title": "संपर्क करें",
-        "login.title": "AGRIFLASK | लॉगिन",
-        "login.brand": "AGRIFLASK",
+        "login.title": "HarvestIQ | लॉगिन",
+        "login.brand": "HarvestIQ",
         "login.subtitle": "स्मार्ट फसल भविष्यवाणी प्रणाली",
         "login.welcome": "स्वागत है",
         "login.manage": "खाता प्रबंधन",
@@ -179,7 +200,7 @@ TRANSLATIONS = {
         "login.role_analyst": "कृषि विश्लेषक",
         "login.role_student": "छात्र",
         "login.placeholder_role": "अपनी भूमिका चुनें",
-        "farmer.title": "AGRIFLASK",
+        "farmer.title": "HarvestIQ",
         "farmer.subtitle": "किसानों के लिए सरल इनपुट को मॉडल मानों में बदला जाता है",
         "farmer.submit": "फसल बताएं (किसान मोड)",
         "analyst.eyebrow": "कृषि विश्लेषक कार्यक्षेत्र",
@@ -280,15 +301,15 @@ TRANSLATIONS = {
         "nav.language": "மொழி",
         "nav.account.edit": "பங்கை மாற்று",
         "nav.account.logout": "வெளியேறு",
-        "home.title": "AGRIFLASK",
+        "home.title": "HarvestIQ",
         "home.subtitle": "ஸ்மார்ட் பயிர் கணிப்பு அமைப்பு",
         "home.predict": "கணிப்பு",
         "home.about_title": "எங்களை பற்றி",
-        "home.about_text_1": "AGRIFLASK என்பது வேளாண்மை பயனாளர்களுக்கு தரவின் அடிப்படையில் பயிர் பரிந்துரைகளை வழங்க உருவாக்கப்பட்ட ஒரு ஸ்மார்ட் கணிப்பு அமைப்பு. இது நைட்ரஜன், பாஸ்பரஸ், பொட்டாசியம், வெப்பநிலை, ஈரப்பதம், pH மற்றும் மழைப்பொழிவு போன்ற அளவுகளை ஆய்வு செய்து பொருத்தமான பயிரை கணிக்கிறது.",
-        "home.about_text_2": "யந்திரக் கற்றல், தரவு பகுப்பாய்வு மற்றும் எளிய பயனர் இடைமுகத்தை இணைப்பதன் மூலம் AGRIFLASK வேளாண்மை தரவையும் நடைமுறை பயன்பாட்டையும் இணைக்க முயல்கிறது.",
+        "home.about_text_1": "HarvestIQ என்பது வேளாண்மை பயனாளர்களுக்கு தரவின் அடிப்படையில் பயிர் பரிந்துரைகளை வழங்க உருவாக்கப்பட்ட ஒரு ஸ்மார்ட் கணிப்பு அமைப்பு. இது நைட்ரஜன், பாஸ்பரஸ், பொட்டாசியம், வெப்பநிலை, ஈரப்பதம், pH மற்றும் மழைப்பொழிவு போன்ற அளவுகளை ஆய்வு செய்து பொருத்தமான பயிரை கணிக்கிறது.",
+        "home.about_text_2": "யந்திரக் கற்றல், தரவு பகுப்பாய்வு மற்றும் எளிய பயனர் இடைமுகத்தை இணைப்பதன் மூலம் HarvestIQ வேளாண்மை தரவையும் நடைமுறை பயன்பாட்டையும் இணைக்க முயல்கிறது.",
         "home.contact_title": "தொடர்பு கொள்ள",
-        "login.title": "AGRIFLASK | உள்நுழை",
-        "login.brand": "AGRIFLASK",
+        "login.title": "HarvestIQ | உள்நுழை",
+        "login.brand": "HarvestIQ",
         "login.subtitle": "ஸ்மார்ட் பயிர் கணிப்பு அமைப்பு",
         "login.welcome": "வரவேற்பு",
         "login.manage": "கணக்கு மேலாண்மை",
@@ -304,7 +325,7 @@ TRANSLATIONS = {
         "login.role_analyst": "விவசாய பகுப்பாய்வாளர்",
         "login.role_student": "மாணவர்",
         "login.placeholder_role": "உங்கள் பங்கை தேர்ந்தெடுக்கவும்",
-        "farmer.title": "AGRIFLASK",
+        "farmer.title": "HarvestIQ",
         "farmer.subtitle": "எளிய உள்ளீடுகளை model மதிப்புகளாக மாற்றுகிறது",
         "farmer.submit": "பயிரை கணிக்கவும் (விவசாயி முறை)",
         "analyst.eyebrow": "விவசாய பகுப்பாய்வாளர் வேலைப்பகம்",
