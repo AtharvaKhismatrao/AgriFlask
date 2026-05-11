@@ -70,6 +70,8 @@ HarvestIQ/
 4. The trained model predicts the best crop.
 5. The app renders a role-specific result page.
 
+![Landing Page](readme_images/home.png)
+
 ### Farmer View
 
 - Uses qualitative inputs such as soil texture, soil fertility, soil appearance, humidity feel, rainfall pattern, and temperature feel.
