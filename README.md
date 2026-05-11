@@ -77,15 +77,21 @@ HarvestIQ/
 - Uses qualitative inputs such as soil texture, soil fertility, soil appearance, humidity feel, rainfall pattern, and temperature feel.
 - Converts those choices into numeric values before sending them to the model.
 
+![Landing Page](readme_images/farmer.jpg)
+
 ### Analyst View
 
 - Accepts direct numeric inputs for N, P, K, temperature, humidity, pH, and rainfall.
 - Shows the predicted crop, confidence, alternative crops, historical crop statistics, and feature importance.
 
+![Landing Page](readme_images/analyst.jpg)
+
 ### Student View
 
 - Uses the same numeric inputs as the analyst view.
 - Returns a simplified prediction summary with top crops and a short explanation.
+
+![Landing Page](readme_images/student.jpg)
 
 ## Requirements
 
